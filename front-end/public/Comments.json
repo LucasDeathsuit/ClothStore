@@ -1,0 +1,39 @@
+{
+    "comments": [
+        {
+            "picture": "sapatos.png",
+            "name": "Fernanda Teles",
+            "value": 5,
+            "title": "Muito bom",
+            "comment": "Amei de coração... Lindos demais os produtinhos mores"
+        },
+        {
+            "picture": "casacos.png",
+            "name": "Lucas Nunes",
+            "value": 4,
+            "title": "É us guriii!!",
+            "comment": "Massa demais nonono"
+        },
+        {
+            "picture": "blusas.png",
+            "name": "Emminha Teles Nunes",
+            "value": 5,
+            "title": "Muito bom",
+            "comment": "Me trancaram no banheiro com ela. Gostei muito! Amei de coração... AA aOEhoaeHO AEOhaoh Ao AOehAOehake akeha aEHJaEHJ Lindos demais os produtinhos mores"
+        },
+        {
+            "picture": "LogoTeste.png",
+            "name": "Maria Sogra Doida",
+            "value": 4,
+            "title": "Muito bom",
+            "comment": "Amei de coração... AA Lindos demais os produtinhos mores"
+        },
+        {
+            "picture": "shoe.jpg",
+            "name": "Emminha Teles",
+            "value": 4,
+            "title": "Muito bom",
+            "comment": "Amei de coração...  Lindos demais os produtinhos mores"
+        }
+    ]
+}
