@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import { createCloth, uploadImage, updateCloth } from '../APIServices/APIServices'
+import { createCloth, uploadImage, updateCloth, deleteCloth } from '../APIServices/APIServices'
 import styled from 'styled-components'
 import Input from '../Input'
 import Button from '../Button'
+import { Redirect } from '@reach/router'
 import { useContext } from 'react'
 import { AuthContext } from '../../Providers/Auth'
 import { useEffect } from 'react'
+import FileInput from '../FileInput'
 
 const FormWrapper = styled.div`
     display: flex;
-    justify-content: center;
+    flex: 0 0 50%;
     padding-bottom: 20px;
-
+    flex-grow: 1;
 `
 
 const Form = styled.form`
@@ -23,6 +25,7 @@ const Form = styled.form`
 
 const TopInputs = styled.div`
 
+    width: 100%;
 
     @media (max-height: 600px) {
         display: grid;
@@ -33,7 +36,9 @@ const TopInputs = styled.div`
 
 const InputWrapper = styled.div`
     width: 100%;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
 
     @media (max-width: 550px) {
         width: 100%;
@@ -44,12 +49,17 @@ const ButtonsWrapper = styled.div`
     display: flex;
     flex-direction: row;
     gap: 0.8rem;
-    width: 360px;
     justify-content: space-around;
     margin-bottom: 1rem;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 `
 
-export default function AddClothForm({ selectedCloth, clothes, updateClothes, addCloth }) {
+export default function AddClothForm({ selectedCloth, clothes, updateClothes, addCloth, removeCloth }) {
 
     const [idCloth, setIdCloth] = useState("")
     const [name, setName] = useState("")
@@ -57,11 +67,9 @@ export default function AddClothForm({ selectedCloth, clothes, updateClothes, ad
     const [price, setPrice] = useState("")
     const [type, setType] = useState("")
     const [selectedFile, setSelectedFile] = useState("")
-    const [isFilePicked, setIsFilePicked] = useState(false)
 
     const changeHandler = async (e) => {
         setSelectedFile(e.target.files[0])
-        setIsFilePicked(!isFilePicked)
     }
 
     const handleImageUpload = async (e) => {
@@ -77,29 +85,40 @@ export default function AddClothForm({ selectedCloth, clothes, updateClothes, ad
         e.preventDefault();
         const tempID = await createCloth(name, description, price, type)
         const tempCloth = { idCloth: tempID, description: description, name: name, price: price, type: type }
-        const index = clothes.findIndex(cloth => cloth.idCloth === tempID)
-        setIdCloth(tempID)
         addCloth(tempCloth)
     }
 
     const editCloth = async (e) => {
         e.preventDefault();
-        updateCloth(idCloth, name, description, price, type)
-        const index = clothes.findIndex(cloth => cloth.idCloth === idCloth)
-        clothes[index].name = name
-        clothes[index].description = description
-        clothes[index].price = price
-        clothes[index].type = type
-        updateClothes(clothes[index]);
+        if (idCloth && name && description && price && type) {
+            updateCloth(idCloth, name, description, price, type)
+            const index = clothes.findIndex(cloth => cloth.idCloth === idCloth)
+            clothes[index].name = name
+            clothes[index].description = description
+            clothes[index].price = price
+            clothes[index].type = type
+            updateClothes(clothes[index]);
+        }
     }
 
-    const handleClearFields = async (e) => {
-        e.preventDefault();
+    const clearFields = () => {
         setIdCloth("")
         setName("")
         setDescription("")
         setPrice("")
         setType("")
+    }
+
+    const handleClearFields = async (e) => {
+        e.preventDefault();
+        clearFields();
+    }
+
+    const handleDeleteCloth = async (e) => {
+        e.preventDefault()
+        deleteCloth(idCloth)
+        removeCloth(idCloth)
+        clearFields()
     }
 
     const { user } = useContext(AuthContext)
@@ -146,14 +165,14 @@ export default function AddClothForm({ selectedCloth, clothes, updateClothes, ad
                         }
                     </Button>
                     <Button type="btn--secondary" size="btn--small" onClick={handleClearFields}>
-                        Excluir
-                    </Button>
-                    <Button type="btn--secondary" size="btn--small" onClick={handleClearFields}>
                         Limpar
+                    </Button>
+                    <Button type="btn--caution" size="btn--small" onClick={handleDeleteCloth}>
+                        Apagar
                     </Button>
                 </ButtonsWrapper>
                 <InputWrapper>
-                    <Input className="fields" label="Image" required placeholder="Image" type="file" name="image" multiple onChange={changeHandler} />
+                    <FileInput name="image" fileName={selectedFile.name} onChange={changeHandler} accept="image/png, image/jpg, image/gif, image/jpeg" />
                 </InputWrapper>
                 <Button type="btn--primary" size="btn--small" onClick={handleImageUpload}>
                     Adicionar Imagem

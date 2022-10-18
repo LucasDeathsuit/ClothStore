@@ -7,17 +7,30 @@ import Cookies from 'universal-cookie'
 import AddClothImageForm from '../Administrative/AddClothImageForm'
 import { getClothesFirstImage } from '../APIServices/APIServices'
 import Filtered from '../Filtered'
+import Container from '../Container'
 import Button from '../Button'
 
 const ManageClothes = styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    position: relative;
+    display: flex;
     gap: 25px;
     margin: auto;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 90px;
+    justify-content: space-around;
+    padding-top: 150px;
+    min-height: calc(100vh - 151px - 130.33px);
     height: auto;
+    max-width: 1200px;
+    overflow: hidden;
+
+    @media (max-width: 1200px) {
+        max-width: 960px;
+    }
+
+    @media (max-width: 1000px) {
+        padding-top: 110px;
+        flex-direction: column-reverse;
+        align-items: center;
+    }
 `
 
 export default function Administrativo() {
@@ -46,11 +59,21 @@ export default function Administrativo() {
 
     const updateClothes = (editedCloth) => {
         const updatedClothes = clothes.map((cloth) => {
-            
+
             if (editedCloth?.idCloth === cloth.idCloth) {
-                return {...cloth, name: editedCloth.name, description: editedCloth.description, type: editedCloth.type, price: editedCloth.price}
+                return { ...cloth, name: editedCloth.name, description: editedCloth.description, type: editedCloth.type, price: editedCloth.price }
             }
             return cloth
+        })
+
+        setClothes(updatedClothes)
+    }
+
+    const removeCloth = (removedClothID) => {
+        const updatedClothes = clothes.filter((cloth) => {
+            if (removedClothID !== cloth.idCloth) {
+                return cloth
+            }
         })
 
         setClothes(updatedClothes)
@@ -59,11 +82,13 @@ export default function Administrativo() {
     return (
         <>
             <Navbar />
-            <ManageClothes>
-                <AddClothForm clothes={clothes} selectedCloth={selectedCloth} updateClothes={updateClothes} addCloth={addCloth}/>
-                <Filtered clothes={clothes} onClick={handleClothSelection} />
-            </ManageClothes>
-            <AddClothImageForm />
+            <Container>
+                <ManageClothes>
+                    <AddClothForm clothes={clothes} selectedCloth={selectedCloth} updateClothes={updateClothes} addCloth={addCloth} removeCloth={removeCloth} />
+                    <Filtered clothes={clothes} onClick={handleClothSelection} />
+                </ManageClothes>
+                <AddClothImageForm />
+            </Container>
             <Footer />
         </>
     )

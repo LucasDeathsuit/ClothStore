@@ -1,7 +1,6 @@
-import { redirectTo } from '@reach/router';
+import { navigate } from '@reach/router';
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-import { Redirect } from '@reach/router';
 
 const BASE_URL = "http://localhost:13233/ClothStore"
 const BASE_URL_API = BASE_URL + "/rest"
@@ -17,6 +16,7 @@ function getToken() {
 
 async function createCloth(name, description, price, type) {
 
+
     try {
         const url = BASE_URL_API + "/clothes"
         const resp = await axios.post(url, {
@@ -25,16 +25,13 @@ async function createCloth(name, description, price, type) {
             price: price,
             type: type
         }, { headers: { authorization: `Bearer ${getToken()}` } });
-
-        if(resp.status === 401) {
-            console.log("Oi");
-            <Redirect to='/fashion-store/login' noThrow />
-        }
-        const id = resp.data.idCloth
-        return id
+        return resp.data.idCloth
 
     } catch (err) {
         console.log(err)
+        if (err.response.status === 401) {
+            navigate('./login')
+        }
     }
 }
 
@@ -47,9 +44,25 @@ async function updateCloth(idCloth, name, description, price, type) {
             price: price,
             type: type
         }, { headers: { authorization: `Bearer ${getToken()}` } });
-
+        console.log(resp)
     } catch (err) {
         console.log(err)
+        if (err.response.status === 401) {
+            navigate('./login')
+        }
+    }
+}
+
+async function deleteCloth(idCloth) {
+    try {
+        const url = BASE_URL_API + "/clothes/" + idCloth
+        const resp = await axios.delete(url, { headers: { authorization: `Bearer ${getToken()}` } })
+        console.log(resp)
+    } catch (err) {
+        console.log(err)
+        if (err.response.status === 401) {
+            navigate('./login')
+        }
     }
 }
 
@@ -170,4 +183,4 @@ async function uploadImage(image, idcloth, name) {
 }
 
 
-export { createCloth, updateCloth, getComments, createComment, getClothes, getClothesFirstImage, getClothesByType, getStoriesData, getCategoriesData, getPromoData, getCommentData, uploadImage }
+export { createCloth, updateCloth, deleteCloth, getComments, createComment, getClothes, getClothesFirstImage, getClothesByType, getStoriesData, getCategoriesData, getPromoData, getCommentData, uploadImage }

@@ -7,7 +7,7 @@ import Footer from '../Footer'
 import { createComment } from '../APIServices/APIServices'
 
 const Container = styled.div`
-    min-height: calc(100vh - 85px - 130.33px);
+    min-height: calc(100vh - 86px - 130.33px);
     padding-top: 110px;
 `
 

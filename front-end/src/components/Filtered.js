@@ -7,32 +7,53 @@ import Input from "./Input";
 import styled from 'styled-components'
 
 const FilteredWrapper = styled.div`
+    position: absolute;
+    top: 90px; right: 0; bottom: 0;
     margin: 10px;
+    flex-grow: 2;
+    flex: 0 0 50%;
+    overflow-y: hidden;
+
+    @media (max-width: 1000px) {
+        position: relative;    
+        top: 0;
+    }
 `
 
 const ItemsWrapper = styled.div`
     margin-top: 10px;
     font-weight: 400;
-    overflow-y: scroll;
+    height: 90%;
     padding: 5px;
-    height: 400px;
-    
+    overflow-y: auto;
+    min-width: 750px;
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(2, 1fr);   
+        min-width: unset;
+    }
+
+    @media (max-width: 1000px) {
+        max-height: 500px;
+        min-width: unset;
+    }
+
     /* width */
-::-webkit-scrollbar {
-  width: 6px;
-}
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
 
-/* Track */
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey;
-  border-radius: 10px;
-}
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #355c7d;
-  border-radius: 10px;
-}
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #355c7d;
+        border-radius: 10px;
+    }
 `
 
 const Icon = styled.img`
@@ -68,6 +89,14 @@ const Clothes = styled.div`
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
 
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+        display: flex;
+        flex-wrap: wrap;
+    }
     
 `
 
@@ -83,6 +112,9 @@ export default function Filtered({ items, clothes, onClick }) {
 
     const [filter, setFilter] = useState('')
 
+    const addDefaultImage = (e) => {
+        e.target.src = './images/MissingClothImage.png'
+    }
 
     return (
         <FilteredWrapper>
@@ -95,7 +127,7 @@ export default function Filtered({ items, clothes, onClick }) {
                                 .map((cloth) => {
                                     return (
                                         <Wrapper key={cloth.id} onClick={() => onClick(cloth)}>
-                                            <Icon src={`http://localhost:13233/ClothStore/cloth-images${cloth.imageURL}`} />
+                                            <Icon onError={addDefaultImage} src={`http://localhost:13233/ClothStore/cloth-images${cloth.imageURL}`} />
                                             <DetailsWrapper>
                                                 <Name>{cloth.name}</Name>
                                                 <Description>{cloth.description}</Description>
@@ -109,7 +141,7 @@ export default function Filtered({ items, clothes, onClick }) {
                     }
                 </Clothes>
             </ItemsWrapper>
-        </FilteredWrapper>
+        </FilteredWrapper >
     )
 
 }

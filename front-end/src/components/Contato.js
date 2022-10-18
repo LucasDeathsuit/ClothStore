@@ -8,7 +8,7 @@ const ContactSection = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 85px - 130.33px);
+    min-height: calc(100vh - 86px - 130.33px);
     padding-top: 85px;
     max-width: 100vw;
     background: rgb(255,228,252);

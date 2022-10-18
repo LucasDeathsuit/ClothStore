@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const STYLES = ['btn--primary', 'btn--secondary', 'btn--outline'];
+const STYLES = ['btn--primary', 'btn--secondary', 'btn--outline', 'btn--caution'];
 
 const SIZES = ['btn--medium', 'btn--large', 'btn--small'];
 
@@ -55,6 +55,18 @@ const Item = styled.button`
                 background-color: #F67280;
                 color: #fff;
                 border: 1px solid #F67280;
+            }
+        }
+
+        &.btn--caution {
+            color: #ffffff;
+            background-color: #f90000;
+            border: 1px solid #f2f2f2;
+
+            :hover {
+                background-color: #ffffff;
+                color: #f90000;
+                border: 1px solid #f90000;
             }
         }
 
