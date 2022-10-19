@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { createCloth, uploadImage, updateCloth, deleteCloth } from '../APIServices/APIServices'
+import { createCloth, uploadImage, updateCloth, deleteCloth, deleteImages } from '../APIServices/APIServices'
 import styled from 'styled-components'
 import Input from '../Input'
 import Button from '../Button'
@@ -121,7 +121,16 @@ export default function AddClothForm({ selectedCloth, clothes, updateClothes, ad
         clearFields()
     }
 
-    const { user } = useContext(AuthContext)
+    const handleImageDeletion = async (e) => {
+        e.preventDefault()
+        deleteImages(idCloth)
+        const index = clothes.findIndex(cloth => cloth.idCloth === idCloth)
+        if (idCloth && selectedFile) {
+            clothes[index].imageURL = '';
+        }
+        updateClothes(clothes[index]);
+    }
+
 
     useEffect(() => {
         setIdCloth(selectedCloth.idCloth)
@@ -174,9 +183,14 @@ export default function AddClothForm({ selectedCloth, clothes, updateClothes, ad
                 <InputWrapper>
                     <FileInput name="image" fileName={selectedFile.name} onChange={changeHandler} accept="image/png, image/jpg, image/gif, image/jpeg" />
                 </InputWrapper>
-                <Button type="btn--primary" size="btn--small" onClick={handleImageUpload}>
-                    Adicionar Imagem
-                </Button>
+                <ButtonsWrapper>
+                    <Button type="btn--primary" size="btn--small" onClick={handleImageUpload}>
+                        Adicionar Imagem
+                    </Button>
+                    <Button type="btn--secondary" size="btn--small" onClick={handleImageDeletion}>
+                        Remover Imagens
+                    </Button>
+                </ButtonsWrapper>
             </Form>
         </FormWrapper>
     )

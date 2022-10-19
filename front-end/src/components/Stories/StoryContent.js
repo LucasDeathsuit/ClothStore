@@ -63,7 +63,7 @@ const StyledLink = styled(Link)`
     }
 `
 
-export default function StoryContent({ imagePath, name }) {
+export default function StoryContent({ imagePath, name, type }) {
 
 
 
@@ -75,11 +75,11 @@ export default function StoryContent({ imagePath, name }) {
             {imagePath === "null" ?
                 null :
                 <>
-                    <Content src={`images/${imagePath}`} />
+                    <Content src={imagePath ? `http://localhost:13233/ClothStore/cloth-images${imagePath}` : './images/MissingClothImage.png'} />
                     <ContentNav>
                         <StyledLink to={`./${name.toLowerCase()}`}>
-                            <ClothType alt={name} src={`images/${imagePath}`} />
-                            {name}
+                            <ClothType alt={name} src={imagePath ? `http://localhost:13233/ClothStore/cloth-images${imagePath}` : './images/MissingClothImage.png'} />
+                            {type}
                         </StyledLink>
                     </ContentNav>
                     <ContentBottom>

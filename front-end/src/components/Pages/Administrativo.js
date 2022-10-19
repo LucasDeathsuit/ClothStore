@@ -16,8 +16,8 @@ const ManageClothes = styled.div`
     gap: 25px;
     margin: auto;
     justify-content: space-around;
-    padding-top: 150px;
-    min-height: calc(100vh - 151px - 130.33px);
+    padding-top: 100px;
+    min-height: calc(100vh - 101px - 130.33px);
     height: auto;
     max-width: 1200px;
     overflow: hidden;

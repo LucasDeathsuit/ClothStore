@@ -124,11 +124,25 @@ async function getClothesByType(category) {
     try {
         const url = BASE_URL_API + "/clothes/type/" + category
         const data = await axios.get(url)
+        console.log(data.data)
         return data.data;
     } catch (err) {
         console.log(err)
     }
 }
+
+async function getClothesTypes(category) {
+    try {
+        const url = BASE_URL_API + "/clothes/type/"
+        const data = await axios.get(url)
+        console.log(data)
+        return data.data;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
 
 async function getStoriesData() {
     const data = await fetch('./RoupasStories.json');
@@ -163,11 +177,11 @@ async function getCommentData(quantity) {
     return commentsData.comments.slice(0, quantity);
 }
 
-async function uploadImage(image, idcloth, name) {
+async function uploadImage(image, idCloth, name) {
     const formData = new FormData();
     const url = BASE_URL_API + "/file_upload"
     formData.append("file", image);
-    formData.append("clothReference", idcloth);
+    formData.append("clothReference", idCloth);
     formData.append("imageName", name);
 
     try {
@@ -182,5 +196,15 @@ async function uploadImage(image, idcloth, name) {
     }
 }
 
+async function deleteImages(idCloth) {
+    const url = BASE_URL_API + "/file_upload/" + idCloth
+    try {
+        const resp = await axios.delete(url);
+        return resp.data
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-export { createCloth, updateCloth, deleteCloth, getComments, createComment, getClothes, getClothesFirstImage, getClothesByType, getStoriesData, getCategoriesData, getPromoData, getCommentData, uploadImage }
+
+export { createCloth, updateCloth, deleteCloth, getClothesTypes, getComments, createComment, getClothes, getClothesFirstImage, getClothesByType, getStoriesData, getCategoriesData, getPromoData, getCommentData, uploadImage, deleteImages }

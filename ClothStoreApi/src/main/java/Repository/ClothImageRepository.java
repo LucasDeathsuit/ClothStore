@@ -44,5 +44,23 @@ public class ClothImageRepository {
 			return false;
 		}
 	}
+	
+	public boolean deleteClothImages(int id) {
+	    String stmt = "delete from tb_cloth_image where id_cloth = ?";
+	    
+	    try {
+	        PreparedStatement ps = connection.prepareStatement(stmt);
+	        ps.setInt(1, id);
+	        
+	        ps.executeUpdate();
+	        
+	        connection.close();
+	        
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+	}
  	
 }

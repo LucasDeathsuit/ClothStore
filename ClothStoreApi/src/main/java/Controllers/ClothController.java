@@ -59,6 +59,15 @@ public class ClothController {
 
 		return Response.status(200).entity(clothes).build();
 	}
+	
+	@GET
+    @Path("/type")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getClothByType() {
+        List<ClothModel> clothes = rep.findOneClothByEachType();
+
+        return Response.status(200).entity(clothes).build();
+    }
 
 	@Secured
 	@POST
@@ -73,10 +82,10 @@ public class ClothController {
 		return Response.status(500).build();
 	}
 
+    @Secured
 	@DELETE
 	@Path("/{id}")
 	public Response deleteCloth(@PathParam("id") int id) {
-
 		if (rep.deleteCloth(id)) {
 			return Response.status(Response.Status.OK).build();
 		}
@@ -84,6 +93,7 @@ public class ClothController {
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 
+    @Secured
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)

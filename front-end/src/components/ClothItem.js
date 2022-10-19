@@ -101,12 +101,16 @@ export default function ClothItem({ addedToCart, onClick, cloth }) {
         setAddedToCart(true)
     }
 
+    const addDefaultImage = (e) => {
+        e.target.src = './images/MissingClothImage.png'
+    }
+
 
     return (
         <Item>
             <ContentWrapper>
                 <ImageWrapper>
-                    <Product src={`http://localhost:13233/ClothStore/cloth-images${cloth.imageURL}`} />
+                    <Product onError={addDefaultImage} src={cloth.imageURL ? `http://localhost:13233/ClothStore/cloth-images${cloth.imageURL}` : './images/MissingClothImage.png'} />
                     <StyledButton onClick={handleButtonClick} type="btn--outline" size="btn--medium">
                         Add to Cart
                         <CartBottom addedToCart={isAddedToCart}>Added<ShoppingCartIcon color='white' /></CartBottom>

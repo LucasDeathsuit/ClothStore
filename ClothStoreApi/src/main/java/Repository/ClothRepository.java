@@ -117,11 +117,44 @@ public class ClothRepository {
 
 				clothes.add(new ClothModel(id, description, name, imageURL, price, type));
 			}
+			
+			connection.close();
+			
 		} catch (Exception e) {
 			System.out.println(e);
-		}
+			
+		} 
 		return clothes;
 	}
+	
+	public List<ClothModel> findOneClothByEachType() {
+        List<ClothModel> clothes = new ArrayList<ClothModel>();
+        String stmt = "select a.*, c.image_url from tb_cloth a INNER JOIN (select max(id_cloth) id_cloth, type from tb_cloth group by type) b on a.type = b.type and a.id_cloth = b.id_cloth left JOIN tb_cloth_image c on a.id_cloth = c.id_cloth";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                int id = rs.getInt("id_cloth");
+                String description = rs.getString("description");
+                String name = rs.getString("name");
+                String imageURL = rs.getString("image_url");
+                String type = rs.getString("type");
+                float price = rs.getFloat("price");
+
+                clothes.add(new ClothModel(id, description, name, imageURL, price, type));
+            }
+            
+            connection.close();
+            
+        } catch (Exception e) {
+            System.out.println(e);
+            
+        } 
+        return clothes;
+    }
+	
 	//Create Cloth
 	public boolean createCloth(ClothModel cloth) {
 		String stmt = "insert into tb_cloth (id_cloth, description, name, price, type) values (null, ?, ?, ?, ?)";

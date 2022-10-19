@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { useRef } from 'react';
-import { getStoriesData } from './APIServices/APIServices';
+import { getClothes, getClothesByType, getClothesTypes, getStoriesData } from './APIServices/APIServices';
 
 const StoriesWrapper = styled.div`
 overflow: hidden;
@@ -138,7 +138,7 @@ export default function Stories() {
         //Adding Resize Event Listener
         window.addEventListener('resize', handleResize)
         //Fetching Stories Data
-        const fetchData = async () => {
+        /*const fetchData = async () => {
             try {
                 setData(await getStoriesData("sapatos"));
             } catch (err) {
@@ -146,7 +146,27 @@ export default function Stories() {
             } finally {
             }
         }
-        fetchData();
+        fetchData();*/
+
+        const fetchData = async () => {
+            const clothTypeArray = []
+            const tempClothArray = []
+
+            try {
+                const clothes = await getClothesTypes();
+                clothes.forEach(clothItem => {
+                    if (!clothTypeArray.includes(clothItem.type)) {
+                        clothTypeArray.push(clothItem.type)
+                        tempClothArray.push(clothItem)
+                    }
+                });
+                setData(tempClothArray)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchData()
 
         //Adding Scroll Event Listener to 
         const storiesEventListenerVariable = refStories.current
@@ -184,7 +204,6 @@ export default function Stories() {
         return () => clearTimeout(timer);
     }, [scrollLeft, windowSize, data])
 
-
     return (
         <StoriesWrapper>
             {
@@ -198,8 +217,8 @@ export default function Stories() {
                     <ArrowCircleLeftIcon value="Left" onClick={() => handleArrowClick(-300)} style={{ fontSize: 40, display: showLeftArrow ? "block" : "none" }} />
                 </LeftArrow>
                 {
-                    data.map((story, index) => {
-                        return <Story key={index} getStoryIndex={setStoryIndex} index={index} onClick={handleStoriesClick} name={story.name} icon={story.icon} />
+                    data.map((cloth, index) => {
+                        return <Story key={index} getStoryIndex={setStoryIndex} index={index} onClick={handleStoriesClick} cloth={cloth} />
                     })
                 }
                 <RightArrow>

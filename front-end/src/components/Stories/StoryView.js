@@ -55,31 +55,31 @@ export default function StoryView({ data, onClick, openIndex }) {
 
     const storiesData = [
         {
-        name: "null",
-        icon: "null",
+            name: "null",
+            imageURL: "null",
 
-    },
-    {
-        name: "null",
-        icon: "null",
+        },
+        {
+            name: "null",
+            imageURL: "null",
 
-    }, ...data,
-    {
-        name: "null",
-        icon: "null",
+        }, ...data,
+        {
+            name: "null",
+            imageURL: "null",
 
-    },
-    {
-        name: "null",
-        icon: "null",
+        },
+        {
+            name: "null",
+            imageURL: "null",
 
-    }
-]
+        }
+    ]
 
 
 
-    const newData = storiesData.map(({ icon, name }, index) => {
-        return <StoryContent key={index} imagePath={icon} name={name} />
+    const newData = storiesData.map((data, index) => {
+        return <StoryContent key={index} imagePath={data.imageURL} name={data.name} type={data.type} />
     })
 
     //Adding +2 to supress the two ghost stories.

@@ -27,6 +27,7 @@ const ItemsWrapper = styled.div`
     padding: 5px;
     overflow-y: auto;
     min-width: 750px;
+    max-width: 750px;
 
     @media (max-width: 1200px) {
         grid-template-columns: repeat(2, 1fr);   
@@ -127,7 +128,7 @@ export default function Filtered({ items, clothes, onClick }) {
                                 .map((cloth) => {
                                     return (
                                         <Wrapper key={cloth.id} onClick={() => onClick(cloth)}>
-                                            <Icon onError={addDefaultImage} src={`http://localhost:13233/ClothStore/cloth-images${cloth.imageURL}`} />
+                                            <Icon onError={addDefaultImage} src={cloth.imageURL ? `http://localhost:13233/ClothStore/cloth-images${cloth.imageURL}` : './images/MissingClothImage.png'} />
                                             <DetailsWrapper>
                                                 <Name>{cloth.name}</Name>
                                                 <Description>{cloth.description}</Description>

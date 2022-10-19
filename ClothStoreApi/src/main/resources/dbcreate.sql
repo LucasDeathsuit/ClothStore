@@ -13,7 +13,7 @@ id_cloth_image int not null auto_increment,
 id_cloth int not null,
 image_url varchar(255) not null,
 primary key (id_cloth_image),
-foreign key (id_cloth) references tb_cloth(id_cloth)
+foreign key (id_cloth) references tb_cloth(id_cloth) on delete cascade
 );
 --INSERT TEST CLOTHES
 INSERT INTO tb_cloth (id_cloth, description, name, price, type) 
