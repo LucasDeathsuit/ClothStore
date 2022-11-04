@@ -26,7 +26,6 @@ public class ClothController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ClothModel> getClothes() {
-		
 		return rep.findAll();
 	
 	}

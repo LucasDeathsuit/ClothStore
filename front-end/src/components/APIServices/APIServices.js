@@ -57,6 +57,7 @@ async function deleteCloth(idCloth) {
     try {
         const url = BASE_URL_API + "/clothes/" + idCloth
         const resp = await axios.delete(url, { headers: { authorization: `Bearer ${getToken()}` } })
+        deleteImages(idCloth)
         console.log(resp)
     } catch (err) {
         console.log(err)

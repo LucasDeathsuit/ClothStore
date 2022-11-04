@@ -87,7 +87,7 @@ export default function ShoppingCart() {
             newCart[key].amount = value;
         }
         setCart(newCart);
-        localStorage.setItem("cart", [])
+        localStorage.setItem("cart", JSON.stringify(newCart))
     }
 
     const calcTotal = () => {
@@ -100,6 +100,7 @@ export default function ShoppingCart() {
 
     useEffect(() => {
         cartRef.current = cart;
+        setTotal(calcTotal)
     }, [cart, total])
 
     useEffect(() => {

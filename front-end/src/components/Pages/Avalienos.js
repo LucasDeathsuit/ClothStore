@@ -43,7 +43,6 @@ export default function Avalienos() {
             <Container>
                 <Form>
                     <Input label="Nome" required placeholder="Insira seu nome" type="text" value={name} name="name" onChange={(e) => setName(e.target.value)} />
-                    <Input label="Foto" required placeholder="Insira sua foto" type="text" value={picture} name="picture" onChange={(e) => setPicture(e.target.value)} />
                     <Input label="Nota" required placeholder="Insira sua nota" type="text" value={rate} name="rate" onChange={(e) => setRate(e.target.value)} />
                     <Input label="Título" placeholder="Título de seu comentário" type="text" value={title} name="title" onChange={(e) => setTitle(e.target.value)} />
                     <Input label="Comentário" placeholder="Comentário" type="text" value={comment} name="comment" onChange={(e) => setComment(e.target.value)} />

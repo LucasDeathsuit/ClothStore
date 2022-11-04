@@ -8,10 +8,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import LogoutIcon from '@mui/icons-material/Logout';
 import StarIcon from '@mui/icons-material/Star';
 import Button from './Button';
-import { Link } from '@reach/router'
+import { Link, navigate } from '@reach/router'
 import Cadastro from './Cadastro';
 import { useContext } from 'react';
 import { AuthContext } from '../Providers/Auth';
+import Cookies from 'universal-cookie';
 
 const Menu = styled.div`
     position: fixed;
@@ -159,6 +160,20 @@ export default function Navbar() {
         }
     }, [])
 
+    const handleLogout = (e) => {
+        e.preventDefault();
+
+
+        const cookies = new Cookies()
+
+        cookies.remove('httpOnly', { path: '/' })
+
+        setUser({})
+
+        navigate("/fashion-store")
+
+    }
+
     return (
         <Menu className={`${isTransparent} ? "transparent" : " "`}>
             <MenuContainer>
@@ -192,13 +207,15 @@ export default function Navbar() {
 
                     {user.isLoggedIn ? (
                         <>
-                            <StyledLink to='/fashion-store/administrative'>
-                                <NavItem>
-                                    <PersonIcon color='white' />
-                                    Administrativo
-                                </NavItem>
-                            </StyledLink>
-                            <StyledLink to='/logout'>
+                            {user.userAccess == 'admin' ? (
+                                <StyledLink to='/fashion-store/administrative'>
+                                    <NavItem>
+                                        <PersonIcon color='white' />
+                                        Administrativo
+                                    </NavItem>
+                                </StyledLink>
+                            ) : null}
+                            <StyledLink to="/fashion-store" onClick={handleLogout}>
                                 <NavItem>
                                     <LogoutIcon color='white' />
                                     Logout

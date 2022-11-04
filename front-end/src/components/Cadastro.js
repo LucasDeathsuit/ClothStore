@@ -5,10 +5,11 @@ import Input from './Input'
 import Cookies from 'universal-cookie'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { FaFacebookF, FaLinkedinIn } from 'react-icons/fa'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 import { createUser, authenticate } from './APIServices/UserApiServices'
 import { navigate } from '@reach/router'
 import { AuthContext } from '../Providers/Auth'
+import { Box, LinearProgress } from '@mui/material'
 
 const SignUpModal = styled.div`
     position: absolute;
@@ -22,6 +23,7 @@ const SignUpModal = styled.div`
     height: 100vh;
     width: 100vw;
     color: #545454;
+    
 `
 
 const ContentWrapper = styled.div`
@@ -160,7 +162,7 @@ const Span = styled.span`
 
 const Subtitle = styled.span`
     &.red {
-        color: red
+        color: red;
     }
 `
 
@@ -173,14 +175,18 @@ export default function Cadastro({ onClick }) {
     const [password, setPassword] = useState("")
     const [userAccess, setUserAccess] = useState("")
     const [response, setResponse] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setIsLoading(true)
         if (isLogin) {
             setResponse(await authenticate(email, password))
         } else {
             setResponse(await createUser(email, password, userAccess))
+            setIsLogin(true)
         }
+        setIsLoading(false)
     }
 
     useEffect(() => {
@@ -192,7 +198,9 @@ export default function Cadastro({ onClick }) {
 
             cookies.set('httpOnly', jwtToken, { path: '/' })
             setUser({ username: user.username, userAccess: user.userAccess, isLoggedIn: user.loggedIn, token: jwtToken })
-            navigate('administrative')
+            user.userAccess === 'admin' ?
+                navigate('administrative') :
+                navigate('./')
         }
     }, [response, setUser])
 
@@ -200,6 +208,21 @@ export default function Cadastro({ onClick }) {
     return (
         <SignUpModal onClick={onClick}>
             <ContentWrapper onClick={e => e.stopPropagation()}>
+                {isLoading &&
+                    <Box sx={{
+                        width: 'calc(100% + 2rem)',
+                        marginLeft: '-1rem',
+                        marginTop: '-2rem',
+                        borderRadius: '100%',
+                        marginBottom: '1.8rem',
+                        color: '#355c7d'
+                    }}>
+                        <LinearProgress color='inherit' sx={{
+                            borderTopRightRadius: '5px',
+                            borderTopLeftRadius: '5px'
+                        }} />
+                    </Box>
+                }
                 <CloseIconWrapper onClick={onClick}>
                     <CloseIcon />
                 </CloseIconWrapper>

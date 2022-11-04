@@ -24,6 +24,7 @@ const Picture = styled.img`
     height: 85px;
     width: 85px;
     object-fit: cover;
+    object-position: top;
 
     @media (max-width: 700px) {
 
@@ -98,9 +99,11 @@ const Price = styled.div`
 
 export default function CartItem({ index, onChange, item }) {
 
-    const { amount, title, iconPath, price, sizes } = item;
+    const { name, description, imageURL, price, sizes, amount } = item;
 
-    const [quantity, setQuantity] = useState(1)
+    console.log(item)
+
+    const [quantity, setQuantity] = useState(amount)
 
 
     const handleQuantityChange = (value) => {
@@ -115,10 +118,10 @@ export default function CartItem({ index, onChange, item }) {
 
     return (
         <CartContainer>
-            <Picture src={`images/${iconPath}`} />
+            <Picture src={imageURL ? `http://localhost:13233/ClothStore/cloth-images${imageURL}` : './images/MissingClothImage.png'} />
             <Description>
                 <Title>
-                    {title}
+                    {name}
                 </Title>
                 <Subtitle>
                     Valor Único: R${price}

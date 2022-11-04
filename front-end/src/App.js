@@ -10,6 +10,7 @@ import Login from './components/Pages/Login';
 import { Redirect } from '@reach/router';
 import Cookies from 'universal-cookie';
 import { AuthContext } from './Providers/Auth';
+import Logout from '@mui/icons-material/Logout';
 
 const NotFound = () => (
   <div>Sorry, nothing here.</div>
@@ -32,12 +33,14 @@ export default function App() {
 
       {
         user.isLoggedIn ? (
+          user.userAccess === 'admin' ?
           <Administrativo path='/administrative' />
+          : null
         ) : (
           <Redirect from='/administrative' to='/fashion-store/login' noThrow />
         )
       }
-
+      <Logout path='/logout' />
       <NotFound default />
 
     </Router>

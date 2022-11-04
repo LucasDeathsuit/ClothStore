@@ -32,6 +32,10 @@ const TopInputs = styled.div`
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
     }
+
+    @media (max-width: 600px) {
+        display: block;
+    }
 `
 
 const InputWrapper = styled.div`
@@ -52,7 +56,7 @@ const ButtonsWrapper = styled.div`
     justify-content: space-around;
     margin-bottom: 1rem;
 
-    @media (max-width: 600px) {
+    @media (max-width: 400px) {
         flex-direction: column;
         justify-content: center;
         align-items: center;

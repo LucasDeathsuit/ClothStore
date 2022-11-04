@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import ClothItem from './ClothItem'
 import { getClothes, getClothesFirstImage, getPromoData } from './APIServices/APIServices'
 import Alert from './Alert'
+import { CircularProgress } from '@mui/material'
+import { Box } from '@mui/system'
 
 
 const PromoItem = styled.div`
@@ -48,13 +50,17 @@ export default function Promo() {
 
     const [, setCart] = useState([])
 
+    const [isLoading, setIsLoading] = useState(false)
+
 
     useEffect(() => {
+        setIsLoading(true)
         const fetchData = async () => {
             const data = await getClothesFirstImage();
             setData(data);
         }
         fetchData();
+        setIsLoading(false)
     }, [])
 
     let localCart = localStorage.getItem("cart") ? localStorage.getItem("cart") : []
@@ -65,6 +71,7 @@ export default function Promo() {
             tempLocalCart = JSON.parse(localCart)
         }
         if (!isItemOnCart(cloth)) {
+            cloth.amount = 1
             tempLocalCart.push(cloth)
             setCart(tempLocalCart)
             localStorage.setItem("cart", JSON.stringify(tempLocalCart))
@@ -75,21 +82,28 @@ export default function Promo() {
         let tempLocalCart
         if (localCart.length) {
             tempLocalCart = JSON.parse(localCart)
-            return tempLocalCart.some(cartItem => cartItem.id === cloth.id)
+            return tempLocalCart.some(cartItem => cartItem.idCloth === cloth.idCloth)
         }
     }
 
     return (
         <PromoItem>
-            <ItemsWrapper>
-                {
-                    data ?
-                        data.map(cloth => {
-                            return <ClothItem addedToCart={() => isItemOnCart(cloth)} key={cloth.idCloth} onClick={addOrRemoveFromCart} cloth={cloth} />
-                        })
-                        : null
-                }
-            </ItemsWrapper>
+            {isLoading &&
+                <Box sx={{ color: '#355c7d', width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <CircularProgress color="inherit" />
+                </Box>
+            }
+            {data.length !== 0 &&
+                <ItemsWrapper>
+                    {
+                        data ?
+                            data.map(cloth => {
+                                return <ClothItem addedToCart={() => isItemOnCart(cloth)} key={cloth.idCloth} onClick={addOrRemoveFromCart} cloth={cloth} />
+                            })
+                            : null
+                    }
+                </ItemsWrapper>
+            }
         </PromoItem>
     )
 }
