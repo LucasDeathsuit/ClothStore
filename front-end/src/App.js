@@ -11,6 +11,8 @@ import { Redirect } from '@reach/router';
 import Cookies from 'universal-cookie';
 import { AuthContext } from './Providers/Auth';
 import Logout from '@mui/icons-material/Logout';
+import UserManager from './components/UserManager';
+import UserProfile from './components/Pages/UserProfile';
 
 const NotFound = () => (
   <div>Sorry, nothing here.</div>
@@ -26,7 +28,7 @@ export default function App() {
       <Login path='/login' />
 
       <Home path='/' exact />
-      <Avalienos path='avalie-nos' />
+      <Avalienos path='/avalie-nos' />
       <Atendimento path='/atendimento' />
       <Carrinho path='/carrinho' />
       <CategoryItems path='/clothes/:clothCategory' />
@@ -34,8 +36,14 @@ export default function App() {
       {
         user.isLoggedIn ? (
           user.userAccess === 'admin' ?
-          <Administrativo path='/administrative' />
-          : null
+            <>
+              <Administrativo path='/administrative' />
+              <UserProfile path='/user-profile' />
+            </>
+            :
+            <>
+              <UserManager path='/user-profile' />
+            </>
         ) : (
           <Redirect from='/administrative' to='/fashion-store/login' noThrow />
         )

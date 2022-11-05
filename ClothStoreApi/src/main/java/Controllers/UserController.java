@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 
 import Models.UserModel;
 import Repository.UserRepository;
+import api.Authentication.Secured;
 import dbSettings.MySQLConnectionManagerImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,6 +20,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
@@ -90,4 +92,19 @@ public class UserController {
 			return Response.status(500).entity("Error: " + e.getMessage()).build();
 		}
 	}	
+	
+	@Secured
+	@GET
+	@Path("/users/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findUser(@PathParam("username") String username) {
+	    try {
+	        UserModel user = rep.findUser(username);
+	        
+	        return Response.status(200).entity(user).build();
+	    } catch (Exception e) {
+	        System.out.println(e);
+	        return Response.status(500).entity("Error: " + e.getMessage()).build();
+	    }
+	}
 }

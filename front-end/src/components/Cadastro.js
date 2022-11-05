@@ -241,7 +241,7 @@ export default function Cadastro({ onClick, onSuccessfulLogin }) {
                                 null
                         }
                         <InputWrapper>
-                            <Input autoComplete="email" className="fields" label="Email" required placeholder="Insira seu email" type="email" value={email} name="email" onChange={(e) => setEmail(e.target.value)} />
+                            <Input autoComplete="username" className="fields" label="Username" required placeholder="Insira seu nome de usuário" type="text" value={email} name="email" onChange={(e) => setEmail(e.target.value)} />
                         </InputWrapper>
 
                         <InputWrapper>

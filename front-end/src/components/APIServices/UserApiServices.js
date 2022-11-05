@@ -1,11 +1,17 @@
 import axios from 'axios'
-import { useContext } from 'react'
-import Cookies from 'universal-cookie'
-import { AuthContext } from '../../Providers/Auth'
+import Cookies from 'universal-cookie';
 
 const BASE_URL = "http://localhost:13233/ClothStore"
 const BASE_URL_API = BASE_URL + "/rest"
 
+
+function getToken() {
+    const cookies = new Cookies();
+
+    const token = cookies.get('httpOnly')
+
+    return token
+}
 
 async function createUser(username, password, userAccess) {
 
@@ -36,4 +42,17 @@ async function authenticate(username, password) {
 
 }
 
-export { createUser, authenticate }
+async function getUserData(username) {
+    const url = BASE_URL_API + "/users/" + username
+    try {
+        const resp = await axios.get(url, { headers: { authorization: `Bearer ${getToken()}` } })
+        console.log(resp)
+
+        return resp
+
+    } catch (error) {
+        return error.response
+    }
+}
+
+export { createUser, authenticate, getUserData }

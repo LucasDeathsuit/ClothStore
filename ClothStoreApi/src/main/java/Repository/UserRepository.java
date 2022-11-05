@@ -98,4 +98,26 @@ public class UserRepository {
 		}
 	}
 
+	public UserModel findUser(String username) {
+	    UserModel user = new UserModel();
+	    String stmt = "SELECT username, email, display_name, avatar_url from tb_users where username = ?";
+	    
+	    try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setDisplayName(rs.getString("display_name"));
+                user.setAvatarURL(rs.getString("avatar_url"));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+	    
+	    return user;
+	}
+	
 }

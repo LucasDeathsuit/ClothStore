@@ -137,7 +137,6 @@ const LoggedInMenu = styled.div`
     border-radius: 5px;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
-    f: all 0.3s;
 
     @media (max-width: 720px) {
         position: relative;
@@ -181,7 +180,7 @@ export default function Navbar() {
 
 
     const [isShowingMenu, setIsShowingMenu] = useState(false);
-    const [isShowingLoggedInMenu, setIsShowingLoggedInMenu] = useState(true);
+    const [isShowingLoggedInMenu, setIsShowingLoggedInMenu] = useState(false);
     const [isTransparent, setIsTransparent] = useState(false);
     const [isShowingModal, setIsShowingModal] = useState(false);
 
@@ -296,7 +295,7 @@ export default function Navbar() {
                             {isShowingLoggedInMenu && <LoggedInMenu className={`${isTransparent}`}>
 
 
-                                <StyledLink to="/fashion-store/user" >
+                                <StyledLink to="/fashion-store/user-profile" >
                                     <LoggedInNavItem>
                                         <ManageAccountsIcon color='white' />
                                         Account
