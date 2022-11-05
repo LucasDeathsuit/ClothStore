@@ -6,7 +6,7 @@ const ContainerDiv = styled.div`
     
 
     @media (max-width: 600px) {
-        margin: 5px;
+        margin: 0 5px;
     }
 `
 

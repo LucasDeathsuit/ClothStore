@@ -82,13 +82,11 @@ export default function Administrativo() {
     return (
         <>
             <Navbar />
-            <Container>
-                <ManageClothes>
-                    <AddClothForm clothes={clothes} selectedCloth={selectedCloth} updateClothes={updateClothes} addCloth={addCloth} removeCloth={removeCloth} />
-                    <Filtered clothes={clothes} onClick={handleClothSelection} />
-                </ManageClothes>
-                <AddClothImageForm />
-            </Container>
+            <ManageClothes>
+                <AddClothForm clothes={clothes} selectedCloth={selectedCloth} updateClothes={updateClothes} addCloth={addCloth} removeCloth={removeCloth} />
+                <Filtered clothes={clothes} onClick={handleClothSelection} />
+            </ManageClothes>
+            <AddClothImageForm />
             <Footer />
         </>
     )

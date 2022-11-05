@@ -7,6 +7,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import LogoutIcon from '@mui/icons-material/Logout';
 import StarIcon from '@mui/icons-material/Star';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Button from './Button';
 import { Link, navigate } from '@reach/router'
 import Cadastro from './Cadastro';
@@ -52,6 +54,7 @@ const RightMenuList = styled.ul`
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #f2f2f2;
     font-weight: 700;
+    transition: none;
 
     @media (max-width: 720px) {
         flex-direction: column;
@@ -62,13 +65,13 @@ const RightMenuList = styled.ul`
         height: calc(100vh - 85px);
         width: 100%;
         padding: 10px 0px;
-        transition: left 0.3s ease-out;
         left: ${props => props.active ? 0 : '-100%'};
         background-color: #F67280;
+        transition: all 0.3s;
 
         &.transparent {
             background-color: #F6728090;
-    }
+        }
     }
 `
 
@@ -122,10 +125,63 @@ const StyledLink = styled(Link)`
     text-decoration: none;
 `
 
+const LoggedInMenu = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #F67280;
+    position: absolute;
+    padding: 1rem;
+    top: 85px;
+    right: calc(25px + 1rem);
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    f: all 0.3s;
+
+    @media (max-width: 720px) {
+        position: relative;
+        top: 0;
+        right: 0;
+        padding: 0;
+        gap: 1.5rem;
+    }
+
+    &.transparent {
+            background-color: #F6728090;
+    }
+`
+
+const LoggedInNavItem = styled.div`
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    padding: 10px;
+    border-radius: 5px;
+
+    @media (max-width: 720px) {
+        padding: 0;
+    }
+
+    :hover {
+       color: #355c7d;
+    }
+`
+
+const LoggedInMenuIconWrapper = styled.div`
+    display: block;
+
+    @media (max-width: 720px) {
+        display: none;
+    }
+`
+
 
 export default function Navbar() {
 
+
     const [isShowingMenu, setIsShowingMenu] = useState(false);
+    const [isShowingLoggedInMenu, setIsShowingLoggedInMenu] = useState(true);
     const [isTransparent, setIsTransparent] = useState(false);
     const [isShowingModal, setIsShowingModal] = useState(false);
 
@@ -135,8 +191,13 @@ export default function Navbar() {
         setIsShowingModal(false)
     }
 
-    const handleResize = () => {
+    const handleResize = (e) => {
         setIsShowingMenu(false)
+        if (e.target.innerWidth <= 720) {
+            setIsShowingLoggedInMenu(true)
+        } else {
+            setIsShowingLoggedInMenu(false)
+        }
     }
 
     const handleScroll = () => {
@@ -174,6 +235,17 @@ export default function Navbar() {
 
     }
 
+    const handleLoggedInMenuClick = (e) => {
+        e.preventDefault();
+
+        setIsShowingLoggedInMenu(!isShowingLoggedInMenu)
+
+    }
+
+    const handleSuccessfulLogin = () => {
+        setIsShowingModal(false)
+    }
+
     return (
         <Menu className={`${isTransparent} ? "transparent" : " "`}>
             <MenuContainer>
@@ -205,22 +277,38 @@ export default function Navbar() {
                         </NavItem>
                     </StyledLink>
 
+                    {user.userAccess == 'admin' ? (
+                        <StyledLink to='/fashion-store/administrative'>
+                            <NavItem>
+                                <PersonIcon color='white' />
+                                Administrativo
+                            </NavItem>
+                        </StyledLink>
+                    ) : null}
+
                     {user.isLoggedIn ? (
                         <>
-                            {user.userAccess == 'admin' ? (
-                                <StyledLink to='/fashion-store/administrative'>
-                                    <NavItem>
-                                        <PersonIcon color='white' />
-                                        Administrativo
-                                    </NavItem>
+                            <LoggedInMenuIconWrapper>
+                                <StyledLink to='' onClick={handleLoggedInMenuClick}>
+                                    <MoreVertIcon color='white' />
                                 </StyledLink>
-                            ) : null}
-                            <StyledLink to="/fashion-store" onClick={handleLogout}>
-                                <NavItem>
-                                    <LogoutIcon color='white' />
-                                    Logout
-                                </NavItem>
-                            </StyledLink>
+                            </LoggedInMenuIconWrapper>
+                            {isShowingLoggedInMenu && <LoggedInMenu className={`${isTransparent}`}>
+
+
+                                <StyledLink to="/fashion-store/user" >
+                                    <LoggedInNavItem>
+                                        <ManageAccountsIcon color='white' />
+                                        Account
+                                    </LoggedInNavItem>
+                                </StyledLink>
+                                <StyledLink to="/fashion-store" onClick={handleLogout}>
+                                    <LoggedInNavItem>
+                                        <LogoutIcon color='white' />
+                                        Logout
+                                    </LoggedInNavItem>
+                                </StyledLink>
+                            </LoggedInMenu>}
                         </>
                     ) : (
                         <Button onClick={() => setIsShowingModal(true)} type={isShowingMenu ? 'btn--secondary' : 'btn--outline'}>
@@ -231,7 +319,7 @@ export default function Navbar() {
                 </RightMenuList>
             </MenuContainer>
 
-            {isShowingModal && <Cadastro onClick={handleOutsideClick} />}
+            {isShowingModal && <Cadastro onClick={handleOutsideClick} onSuccessfulLogin={handleSuccessfulLogin} />}
         </Menu >
     )
 }

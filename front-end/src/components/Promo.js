@@ -93,7 +93,7 @@ export default function Promo() {
                     <CircularProgress color="inherit" />
                 </Box>
             }
-            {data.length !== 0 &&
+            
                 <ItemsWrapper>
                     {
                         data ?
@@ -103,7 +103,7 @@ export default function Promo() {
                             : null
                     }
                 </ItemsWrapper>
-            }
+            
         </PromoItem>
     )
 }

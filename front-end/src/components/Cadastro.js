@@ -166,7 +166,7 @@ const Subtitle = styled.span`
     }
 `
 
-export default function Cadastro({ onClick }) {
+export default function Cadastro({ onClick, onSuccessfulLogin }) {
 
     const { setUser } = React.useContext(AuthContext)
 
@@ -194,13 +194,17 @@ export default function Cadastro({ onClick }) {
         if (response.status === 200) {
             const user = response.data
 
-            const jwtToken = user.token
+            const jwtToken = user.token;
+
+            onSuccessfulLogin && onSuccessfulLogin()
 
             cookies.set('httpOnly', jwtToken, { path: '/' })
             setUser({ username: user.username, userAccess: user.userAccess, isLoggedIn: user.loggedIn, token: jwtToken })
             user.userAccess === 'admin' ?
                 navigate('administrative') :
                 navigate('./')
+
+            
         }
     }, [response, setUser])
 
