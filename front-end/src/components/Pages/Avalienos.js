@@ -7,21 +7,19 @@ import Footer from '../Footer'
 import { createComment } from '../APIServices/APIServices'
 
 const Container = styled.div`
-    min-height: calc(100vh - 86px - 130.33px);
-    padding-top: 110px;
+    min-height: calc(100vh - 111px - 130.33px);
+    padding: 110px 10px 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    width: 500px;
     row-gap: 25px;
-    column-gap: 10px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 20px;
 `
 
 export default function Avalienos() {
@@ -36,13 +34,12 @@ export default function Avalienos() {
         e.preventDefault()
         createComment(name, picture, rate, title, comment);
     }
-    
+
     return (
         <>
             <Navbar />
             <Container>
                 <Form>
-                    <Input label="Nome" required placeholder="Insira seu nome" type="text" value={name} name="name" onChange={(e) => setName(e.target.value)} />
                     <Input label="Nota" required placeholder="Insira sua nota" type="text" value={rate} name="rate" onChange={(e) => setRate(e.target.value)} />
                     <Input label="Título" placeholder="Título de seu comentário" type="text" value={title} name="title" onChange={(e) => setTitle(e.target.value)} />
                     <Input label="Comentário" placeholder="Comentário" type="text" value={comment} name="comment" onChange={(e) => setComment(e.target.value)} />

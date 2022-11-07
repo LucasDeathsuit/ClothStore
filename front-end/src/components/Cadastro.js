@@ -199,7 +199,7 @@ export default function Cadastro({ onClick, onSuccessfulLogin }) {
             onSuccessfulLogin && onSuccessfulLogin()
 
             cookies.set('httpOnly', jwtToken, { path: '/' })
-            setUser({ username: user.username, userAccess: user.userAccess, isLoggedIn: user.loggedIn, token: jwtToken })
+            setUser({ idUser: user.idUser, username: user.username, userAccess: user.userAccess, isLoggedIn: user.loggedIn, token: jwtToken })
             user.userAccess === 'admin' ?
                 navigate('administrative') :
                 navigate('./')
